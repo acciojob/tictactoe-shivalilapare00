@@ -42,16 +42,18 @@ function makeMove(cell) {
     switchTurn();
 }
 
+let currentPlayer = "x";
+
 function switchTurn() {
-    if (currentPlayer === "X") {
-        currentPlayer = "O";
+    if (currentPlayer === "x") {
+        currentPlayer = "o";
         turnName = player2;
     } else {
-        currentPlayer = "X";
+        currentPlayer = "x";
         turnName = player1;
     }
-    updateMessage();
 }
+
 
 function updateMessage() {
     document.getElementById("message").innerText = `${turnName}, you're up`;
