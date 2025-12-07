@@ -1,18 +1,19 @@
-//your JS code here. If required.
 let player1 = "";
 let player2 = "";
-let currentPlayer = "X";
+let currentPlayer = "x";   // Cypress expects lowercase x and o
 let turnName = "";
 
+// When user clicks Start Game
 document.getElementById("submit").addEventListener("click", () => {
-    player1 = document.getElementById("player-1").value;
-    player2 = document.getElementById("player-2").value;
+    player1 = document.getElementById("player1").value;
+    player2 = document.getElementById("player2").value;
 
     if (player1 === "" || player2 === "") {
         alert("Please enter both names!");
         return;
     }
 
+    // Hide input screen, show board
     document.getElementById("input-screen").classList.add("hidden");
     document.getElementById("game-screen").classList.remove("hidden");
 
@@ -20,21 +21,22 @@ document.getElementById("submit").addEventListener("click", () => {
     updateMessage();
 });
 
-const board = document.getElementById("board");
+// All cell click logic
 const cells = document.querySelectorAll(".cell");
 
 cells.forEach(cell => {
-    cell.addEventListener("click", () => makeMove(cell));
+    cell.addEventListener("click", () => handleMove(cell));
 });
 
-function makeMove(cell) {
-    if (cell.innerText !== "") return; // Prevent overwrite
+// Handle player move
+function handleMove(cell) {
+    if (cell.innerText !== "") return;  // prevent overwriting
 
-    cell.innerText = currentPlayer;
+    cell.innerText = currentPlayer;  // place x or o
 
     if (checkWinner()) {
         document.getElementById("message").innerText =
-            `${turnName}, congratulations you won!`;
+            `${turnName} congratulations you won!`;
         disableBoard();
         return;
     }
@@ -42,8 +44,7 @@ function makeMove(cell) {
     switchTurn();
 }
 
-let currentPlayer = "x";
-
+// Switch player turn
 function switchTurn() {
     if (currentPlayer === "x") {
         currentPlayer = "o";
@@ -52,31 +53,13 @@ function switchTurn() {
         currentPlayer = "x";
         turnName = player1;
     }
+
+    updateMessage();
 }
 
-
+// Update message box
 function updateMessage() {
     document.getElementById("message").innerText = `${turnName}, you're up`;
 }
 
-function disableBoard() {
-    cells.forEach(c => c.style.pointerEvents = "none");
-}
-
-function checkWinner() {
-    const winPatterns = [
-        [1,2,3], [4,5,6], [7,8,9],
-        [1,4,7], [2,5,8], [3,6,9],
-        [1,5,9], [3,5,8]
-    ];
-
-    return winPatterns.some(pattern => {
-        const [a, b, c] = pattern;
-        return (
-            document.getElementById(a).innerText !== "" &&
-            document.getElementById(a).innerText === document.getElementById(b).innerText &&
-            document.getElementById(b).innerText === document.getElementById(c).innerText
-        );
-    });
-}
-
+// Disa
